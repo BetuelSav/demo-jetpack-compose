@@ -15,6 +15,9 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import com.example.hungrywolfscompose.R
+import com.example.hungrywolfscompose.core.ui.theme.Gray
+import com.example.hungrywolfscompose.core.ui.theme.GrayLight
+import com.example.hungrywolfscompose.core.ui.theme.RedLight
 
 @Composable
 fun BottomBar(
@@ -28,15 +31,15 @@ fun BottomBar(
         exit = slideOutVertically(targetOffsetY = { it })
     ) {
         BottomNavigation(
-            backgroundColor = colorResource(id = R.color.background),
+            backgroundColor = GrayLight,
             elevation = 0.dp
         ) {
             BottomNavScreen.values().forEach { screen ->
                 BottomNavigationItem(
                     icon = { Icon(painterResource(screen.icon), null) },
-                    selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
-                    selectedContentColor = colorResource(id = R.color.red_light),
-                    unselectedContentColor = colorResource(id = R.color.gray),
+                    selected = currentDestination?.route == screen.route,
+                    selectedContentColor = RedLight,
+                    unselectedContentColor = Gray,
                     onClick = {
                         navController.navigate(
                             route = screen.route,
