@@ -1,3 +1,22 @@
 <resources>
     <string name="app_name">Hungry Wolfs Compose</string>
+
+    <!-- Profile -->
+    <string name="profile_title">My profile</string>
+    <string name="profile_favorites">Favorites</string>
+    <string name="profile_modal_title">Take a picture or upload one</string>
+    <string name="terms_and_conditions">Terms and conditions</string>
+    <string name="terms_and_conditions_uri">https://www.wolfpack-digital.com/privacy</string>
+
+    <!-- Home -->
+    <string name="home_title">Delicious \nfood for you</string>
+    <string name="home_search">Search</string>
+
+    <!-- Details -->
+    <string name="details_ingredients">Ingredients</string>
+    <string name="details_instructions">Instructions</string>
+
+    <!-- Favorite -->
+    <string name="favorite_title">My favourites</string>
+    <string name="favorite_swipe_to_delete">swipe on an item to delete</string>
 </resources>
