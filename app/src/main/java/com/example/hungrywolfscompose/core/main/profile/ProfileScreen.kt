@@ -1,6 +1,8 @@
 package com.example.hungrywolfscompose.core.main.profile
 
+import android.content.Intent
 import android.graphics.Bitmap
+import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.launch
@@ -16,15 +18,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.ModalBottomSheetLayout
-import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material.ModalBottomSheetValue
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -47,7 +49,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.startActivity
+import androidx.navigation.NavHostController
 import com.example.hungrywolfscompose.R
+import com.example.hungrywolfscompose.core.main.BottomNavScreen
 import com.example.hungrywolfscompose.core.ui.theme.Gray
 import com.example.hungrywolfscompose.core.ui.theme.GrayLight
 import com.example.hungrywolfscompose.core.ui.theme.fontSfPro
@@ -60,7 +65,9 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun ProfileScreen() {
+fun ProfileScreen(
+    navController: NavHostController
+) {
     val coroutineScope = rememberCoroutineScope()
     val modalState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
 
@@ -112,7 +119,8 @@ fun ProfileScreen() {
     ) {
         ProfileScreenContent(
             profileImageBitmap = imageBitmap,
-            profileImageClicked = { coroutineScope.launch { modalState.show() } }
+            profileImageClicked = { coroutineScope.launch { modalState.show() } },
+            favoriteOptionClicked = { navController.navigate(BottomNavScreen.FAVORITE.route) },
         )
     }
 }
@@ -120,12 +128,20 @@ fun ProfileScreen() {
 @Composable
 fun ProfileScreenContent(
     profileImageBitmap: Bitmap?,
-    profileImageClicked: () -> Unit
+    profileImageClicked: () -> Unit,
+    favoriteOptionClicked: () -> Unit
 ) {
+    val context = LocalContext.current
+    val termsOfServiceIntent = Intent(
+        Intent.ACTION_VIEW,
+        Uri.parse(stringResource(id = R.string.terms_and_conditions_uri))
+    )
+
     Column(
         modifier = Modifier
             .padding(top = 60.dp, start = 48.dp, end = 48.dp)
             .fillMaxSize()
+            .verticalScroll(state = rememberScrollState())
     ) {
         ProfileTitle()
         Spacer(modifier = Modifier.height(40.dp))
@@ -137,9 +153,15 @@ fun ProfileScreenContent(
             onImageClick = profileImageClicked
         )
         Spacer(modifier = Modifier.height(30.dp))
-        ProfileOption(text = stringResource(id = R.string.profile_favorites))
+        ProfileOption(
+            text = stringResource(id = R.string.profile_favorites),
+            optionClicked = favoriteOptionClicked
+        )
         Spacer(modifier = Modifier.height(30.dp))
-        ProfileOption(text = stringResource(id = R.string.terms_and_conditions))
+        ProfileOption(
+            text = stringResource(id = R.string.terms_and_conditions),
+            optionClicked = { startActivity(context, termsOfServiceIntent, null) }
+        )
     }
 }
 
@@ -208,12 +230,17 @@ fun PersonalDetailsCard(
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun ProfileOption(text: String) {
+fun ProfileOption(
+    text: String,
+    optionClicked: () -> Unit
+) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(20.dp),
-        backgroundColor = Color.White
+        backgroundColor = Color.White,
+        onClick = optionClicked
     ) {
         Row(
             modifier = Modifier.padding(start = 23.dp, top = 20.dp, end = 36.dp, bottom = 20.dp),
@@ -293,5 +320,5 @@ fun PersonalDetailsCardPreview() {
 @Preview
 @Composable
 fun ProfileOptionPreview() {
-    ProfileOption(text = "Favorites")
+    ProfileOption(text = "Favorites", optionClicked = {})
 }
