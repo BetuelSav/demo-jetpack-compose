@@ -1,5 +1,6 @@
 package com.example.hungrywolfscompose.application
 
+import com.example.hungrywolfscompose.core.main.details.DetailsViewModel
 import com.example.hungrywolfscompose.core.main.home.HomeViewModel
 import com.example.hungrywolfscompose.data.api.ApiProvider
 import com.example.hungrywolfscompose.data.repo.MainRepo
@@ -13,6 +14,7 @@ object AppModules {
 
     private val viewModels = module {
         viewModel { HomeViewModel(get(), get()) }
+        viewModel { (mealId: String) -> DetailsViewModel(mealId) }
     }
 
     private val apiModule = module {

@@ -44,7 +44,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.hungrywolfscompose.R
+import com.example.hungrywolfscompose.core.main.NavScreen
 import com.example.hungrywolfscompose.core.ui.theme.GrayBright
 import com.example.hungrywolfscompose.core.ui.theme.GrayDark
 import com.example.hungrywolfscompose.core.ui.theme.GrayLightest
@@ -58,7 +60,10 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun HomeScreen(viewModel: HomeViewModel = getViewModel()) {
+fun HomeScreen(
+    navController: NavHostController,
+    viewModel: HomeViewModel = getViewModel()
+) {
     var selectedCategoryIndex by rememberSaveable { mutableStateOf(0) }
     val mealsPreviewListState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
@@ -70,8 +75,7 @@ fun HomeScreen(viewModel: HomeViewModel = getViewModel()) {
     ) {
         Title(Modifier.padding(start = 53.dp, top = 40.dp, end = 53.dp))
         SearchButton(
-            // TODO:   Navigation to Search screen
-            onClick = {},
+            onClick = { navController.navigate(NavScreen.SEARCH.route) },
             modifier = Modifier
                 .fillMaxSize()
                 .padding(start = 53.dp, top = 16.dp, end = 53.dp, bottom = 45.dp)
@@ -100,8 +104,7 @@ fun HomeScreen(viewModel: HomeViewModel = getViewModel()) {
                 FoodCategoryPreviewItem(
                     imageUrl = item.mealImageUrl,
                     title = item.mealName,
-                    // TODO: Navigation to Details screen
-                    onClick = {}
+                    onClick = { navController.navigate("${NavScreen.DETAILS.route}/${item.id}") }
                 )
                 Spacer(modifier = Modifier.width(27.dp))
             }
