@@ -21,13 +21,18 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentDestination = navBackStackEntry?.destination
+                val bottomBarVisible = when (navBackStackEntry?.destination?.route) {
+                    NavScreen.DETAILS.route + "/{${NavArgs.MEAL_ID}}",
+                    NavScreen.SEARCH.route -> false
+                    else -> true
+                }
 
                 Scaffold(
                     bottomBar = {
                         BottomBar(
                             navController = navController,
                             currentDestination = currentDestination,
-                            visible = true
+                            visible = bottomBarVisible
                         )
                     },
                     backgroundColor = GrayLight
