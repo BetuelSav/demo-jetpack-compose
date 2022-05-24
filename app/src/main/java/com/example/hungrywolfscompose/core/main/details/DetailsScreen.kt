@@ -1,5 +1,6 @@
 package com.example.hungrywolfscompose.core.main.details
 
+import android.content.res.Configuration
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,6 +26,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.layoutId
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -35,6 +37,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.constraintlayout.compose.ChainStyle
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import androidx.constraintlayout.compose.Dimension
@@ -64,7 +67,7 @@ fun DetailsScreen(
     navController: NavHostController,
     viewModel: DetailsViewModel = getViewModel() { parametersOf(mealId) }
 ) {
-    val constraints = ConstraintSet {
+    val constraintsForPortraitMode = ConstraintSet {
         val backButton = createRefFor(ID_BACK)
         val favoriteToggle = createRefFor(ID_FAVORITE_TOGGLE)
         val mealImage = createRefFor(ID_MEAL_IMAGE)
@@ -100,6 +103,55 @@ fun DetailsScreen(
             width = Dimension.matchParent
         }
     }
+    val constraintsForLandscapeMode = ConstraintSet {
+        val backButton = createRefFor(ID_BACK)
+        val favoriteToggle = createRefFor(ID_FAVORITE_TOGGLE)
+        val mealImage = createRefFor(ID_MEAL_IMAGE)
+        val title = createRefFor(ID_TITLE)
+        val tags = createRefFor(ID_TAGS)
+        val subtitleIngredients = createRefFor(ID_SUBTITLE_INGREDIENTS)
+
+        val startGuideline = createGuidelineFromStart(32.dp)
+        val endGuideline = createGuidelineFromEnd(32.dp)
+        val barrierBottomTitle = createBottomBarrier(title,mealImage)
+
+        constrain(favoriteToggle) {
+            top.linkTo(parent.top)
+            start.linkTo(parent.start)
+        }
+        constrain(backButton) {
+            top.linkTo(parent.top)
+            end.linkTo(parent.end)
+        }
+        constrain(title) {
+            top.linkTo(backButton.bottom, 16.dp)
+            start.linkTo(startGuideline)
+            end.linkTo(mealImage.start)
+            width = Dimension.preferredWrapContent
+        }
+        constrain(mealImage) {
+            top.linkTo(title.top, 10.dp)
+            bottom.linkTo(title.bottom)
+            start.linkTo(title.end)
+            end.linkTo(endGuideline)
+            width = Dimension.value(100.dp)
+            height = Dimension.value(100.dp)
+        }
+        constrain(tags) {
+            top.linkTo(barrierBottomTitle, 4.dp)
+            width = Dimension.matchParent
+        }
+        constrain(subtitleIngredients) {
+            top.linkTo(tags.bottom, 16.dp)
+            width = Dimension.matchParent
+        }
+        createHorizontalChain(favoriteToggle, backButton, chainStyle = ChainStyle.Spread)
+    }
+
+    val currentScreenOrientation = LocalContext.current.resources.configuration.orientation
+    val constraints =
+        if (currentScreenOrientation == Configuration.ORIENTATION_PORTRAIT) constraintsForPortraitMode
+        else constraintsForLandscapeMode
 
     LazyColumn(verticalArrangement = Arrangement.spacedBy(6.dp)) {
         item {
@@ -147,7 +199,7 @@ fun DetailsScreen(
                     }
                 }
                 Text(
-                    text = stringResource(id = R.string.details_ingredients),
+                    text = stringResource(id = R.string.details_ingredients_title),
                     fontFamily = fontSfProRounded,
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 17.sp,

@@ -13,7 +13,7 @@
     <string name="home_search">Search</string>
 
     <!-- Details -->
-    <string name="details_ingredients">Ingredients</string>
+    <string name="details_ingredients_title">Ingredients</string>
     <string name="details_instructions_title">Instructions</string>
 
     <!-- Favorite -->
