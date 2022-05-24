@@ -14,7 +14,7 @@
 
     <!-- Details -->
     <string name="details_ingredients">Ingredients</string>
-    <string name="details_instructions">Instructions</string>
+    <string name="details_instructions_title">Instructions</string>
 
     <!-- Favorite -->
     <string name="favorite_title">My favourites</string>
