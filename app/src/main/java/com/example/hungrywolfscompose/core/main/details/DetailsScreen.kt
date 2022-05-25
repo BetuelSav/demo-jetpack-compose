@@ -8,12 +8,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -40,6 +38,7 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -53,7 +52,6 @@ import androidx.navigation.NavHostController
 import com.example.hungrywolfscompose.R
 import com.example.hungrywolfscompose.core.ui.theme.GrayBright
 import com.example.hungrywolfscompose.core.ui.theme.GrayDark
-import com.example.hungrywolfscompose.core.ui.theme.GrayLight
 import com.example.hungrywolfscompose.core.ui.theme.RedLight
 import com.example.hungrywolfscompose.core.ui.theme.fontSfPro
 import com.example.hungrywolfscompose.core.ui.theme.fontSfProRounded
@@ -63,7 +61,6 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
-import com.skydoves.landscapist.CircularReveal
 import com.skydoves.landscapist.glide.GlideImage
 import org.koin.androidx.compose.getViewModel
 import org.koin.core.parameter.parametersOf
@@ -74,6 +71,7 @@ private const val ID_PAGER_WITH_INDICATOR = "id_pager_with_indicator"
 private const val ID_TITLE = "id_title"
 private const val ID_TAGS = "id_tags"
 private const val ID_SUBTITLE_INGREDIENTS = "id_subtitle"
+private const val SHRINK_SIZE = 4
 
 @Composable
 fun DetailsScreen(
@@ -81,6 +79,9 @@ fun DetailsScreen(
     navController: NavHostController,
     viewModel: DetailsViewModel = getViewModel() { parametersOf(mealId) }
 ) {
+    var ingredientsExpanded by remember { mutableStateOf(false) }
+    var instructionsExpanded by remember { mutableStateOf(false) }
+
     val constraintsForPortraitMode = ConstraintSet {
         val backButton = createRefFor(ID_BACK)
         val favoriteToggle = createRefFor(ID_FAVORITE_TOGGLE)
@@ -222,7 +223,9 @@ fun DetailsScreen(
         }
 
         viewModel.ingredientsList.value?.let { ingredientsList ->
-            itemsIndexed(ingredientsList) { index, item ->
+            itemsIndexed(
+                items = ingredientsList.take(if (ingredientsExpanded) ingredientsList.size else SHRINK_SIZE),
+            ) { index, item ->
                 Ingredients(
                     modifier = Modifier.padding(start = 40.dp),
                     measurement = item.measurement,
@@ -231,10 +234,18 @@ fun DetailsScreen(
                     onChecked = { checked -> viewModel.ingredientChecked(checked, index) }
                 )
             }
+            if (ingredientsList.size > SHRINK_SIZE)
+                item {
+                    ExpandShrinkButton(
+                        modifier = Modifier.padding(start = 40.dp),
+                        expanded = ingredientsExpanded,
+                        onClick = { ingredientsExpanded = !ingredientsExpanded }
+                    )
+                }
         }
         item {
             ConstraintLayout {
-                val (instructionsTitle, instructions) = createRefs()
+                val (instructionsTitle, instructions, expandShrinkButton) = createRefs()
                 Text(
                     text = stringResource(id = R.string.details_instructions_title),
                     fontFamily = fontSfProRounded,
@@ -252,11 +263,23 @@ fun DetailsScreen(
                     fontFamily = fontSfPro,
                     fontSize = 15.sp,
                     color = GrayDark,
+                    maxLines = if (instructionsExpanded) Int.MAX_VALUE else SHRINK_SIZE,
+                    overflow = TextOverflow.Ellipsis,
                     modifier = Modifier
                         .padding(horizontal = 32.dp)
                         .constrainAs(instructions) {
                             top.linkTo(instructionsTitle.bottom)
                             start.linkTo(parent.start)
+                        }
+                )
+                ExpandShrinkButton(
+                    expanded = instructionsExpanded,
+                    onClick = { instructionsExpanded = !instructionsExpanded },
+                    modifier = Modifier
+                        .padding(start = 32.dp, top = 8.dp, bottom = 16.dp)
+                        .constrainAs(expandShrinkButton) {
+                            start.linkTo(instructions.start)
+                            top.linkTo(instructions.bottom)
                         }
                 )
             }
@@ -370,6 +393,34 @@ fun MealTag(tag: String) {
             fontFamily = fontSfPro,
             fontSize = 15.sp
         )
+    }
+}
+
+@Composable
+fun ExpandShrinkButton(
+    modifier: Modifier = Modifier,
+    expanded: Boolean,
+    onClick: () -> Unit
+) {
+    Row(modifier = modifier) {
+        Box(
+            modifier = Modifier
+                .border(
+                    width = (0.5).dp,
+                    color = GrayBright,
+                    shape = RoundedCornerShape(16.dp)
+                )
+                .padding(horizontal = 10.dp, vertical = 5.dp)
+                .noRippleClickable { onClick() }
+        ) {
+            Text(
+                text = stringResource(id = if (expanded) R.string.details_see_less else R.string.details_see_more),
+                color = GrayBright,
+                textAlign = TextAlign.Center,
+                fontFamily = fontSfPro,
+                fontSize = 10.sp
+            )
+        }
     }
 }
 
