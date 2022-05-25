@@ -352,18 +352,29 @@ fun PagerWithIndicator(
                         .clip(shape = CircleShape)
                 )
             else
-                GlideImage(
-                    imageModel = stringResource(id = R.string.details_thumb_from_id, videoThumbId),
-                    contentScale = ContentScale.Fit,
-                    modifier = Modifier
-                        .height(240.dp)
-                        .wrapContentWidth()
-                        .noRippleClickable {
-                            videoLink
-                                ?.toUri()
-                                ?.let { customTabsIntent.launchUrl(context, it) }
-                        }
-                )
+                Box(contentAlignment = Alignment.Center) {
+                    GlideImage(
+                        imageModel = stringResource(
+                            id = R.string.details_thumb_from_id,
+                            videoThumbId
+                        ),
+                        contentScale = ContentScale.Fit,
+                        modifier = Modifier
+                            .height(240.dp)
+                            .wrapContentWidth()
+                            .noRippleClickable {
+                                videoLink
+                                    ?.toUri()
+                                    ?.let { customTabsIntent.launchUrl(context, it) }
+                            }
+                    )
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_circle_play),
+                        contentDescription = null,
+                        tint = Color.White,
+                        modifier = Modifier.size(100.dp)
+                    )
+                }
         }
         if (hasVideo)
             HorizontalPagerIndicator(
