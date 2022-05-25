@@ -11,10 +11,22 @@
         <entry key="../../../../layout/compose-model-1653030509737.xml" value="0.5046296296296297" />
         <entry key="../../../../layout/compose-model-1653035553726.xml" value="1.0" />
         <entry key="../../../../layout/compose-model-1653036822366.xml" value="0.3472222222222222" />
+        <entry key="../../../../layout/compose-model-1653294293125.xml" value="0.34629629629629627" />
+        <entry key="../../../../layout/compose-model-1653376758415.xml" value="0.5" />
+        <entry key="../../../../layout/compose-model-1653400133093.xml" value="0.1" />
+        <entry key="../../../../layout/compose-model-1653400289077.xml" value="0.2" />
+        <entry key="../../../../layout/compose-model-1653401495397.xml" value="0.17037037037037037" />
+        <entry key="../../../../layout/compose-model-1653403537085.xml" value="0.33" />
+        <entry key="../../../../layout/compose-model-1653455162680.xml" value="0.30925925925925923" />
         <entry key="app/src/main/res/drawable-v24/ic_arrow_left.xml" value="0.249" />
         <entry key="app/src/main/res/drawable-v24/ic_arrow_right.xml" value="0.249" />
         <entry key="app/src/main/res/drawable-v24/ic_loup.xml" value="0.2725" />
+        <entry key="app/src/main/res/drawable/ic_box_checked.xml" value="0.2035" />
+        <entry key="app/src/main/res/drawable/ic_box_uncheked.xml" value="0.2035" />
+        <entry key="app/src/main/res/drawable/ic_circle_play.xml" value="0.1715" />
         <entry key="app/src/main/res/drawable/ic_favorite.xml" value="0.267" />
+        <entry key="app/src/main/res/drawable/ic_heart.xml" value="0.187" />
+        <entry key="app/src/main/res/drawable/ic_heart_red.xml" value="0.187" />
         <entry key="app/src/main/res/drawable/ic_home.xml" value="0.267" />
         <entry key="app/src/main/res/drawable/ic_profile.xml" value="0.267" />
         <entry key="app/src/main/res/drawable/ic_take_photo.xml" value="0.21" />

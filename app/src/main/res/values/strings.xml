@@ -13,8 +13,11 @@
     <string name="home_search">Search</string>
 
     <!-- Details -->
-    <string name="details_ingredients">Ingredients</string>
-    <string name="details_instructions">Instructions</string>
+    <string name="details_ingredients_title">Ingredients</string>
+    <string name="details_instructions_title">Instructions</string>
+    <string name="details_thumb_from_id">https://img.youtube.com/vi/%s/hqdefault.jpg</string>
+    <string name="details_see_more">See More</string>
+    <string name="details_see_less">See Less</string>
 
     <!-- Favorite -->
     <string name="favorite_title">My favourites</string>
