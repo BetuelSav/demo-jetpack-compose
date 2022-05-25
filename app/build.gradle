@@ -81,6 +81,9 @@ dependencies {
     // Hawk
     implementation "com.orhanobut:hawk:2.0.1"
 
+    // Chrome tab
+    implementation "androidx.browser:browser:1.4.0"
+
     // Compose
     implementation "androidx.compose.ui:ui:$compose_version"
     implementation "androidx.compose.material:material:$compose_version"

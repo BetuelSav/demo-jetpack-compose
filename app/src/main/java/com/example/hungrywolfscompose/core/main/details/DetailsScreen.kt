@@ -1,13 +1,20 @@
 package com.example.hungrywolfscompose.core.main.details
 
 import android.content.res.Configuration
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
@@ -41,14 +48,21 @@ import androidx.constraintlayout.compose.ChainStyle
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import androidx.constraintlayout.compose.Dimension
+import androidx.core.net.toUri
 import androidx.navigation.NavHostController
 import com.example.hungrywolfscompose.R
+import com.example.hungrywolfscompose.core.ui.theme.GrayBright
 import com.example.hungrywolfscompose.core.ui.theme.GrayDark
+import com.example.hungrywolfscompose.core.ui.theme.GrayLight
 import com.example.hungrywolfscompose.core.ui.theme.RedLight
 import com.example.hungrywolfscompose.core.ui.theme.fontSfPro
 import com.example.hungrywolfscompose.core.ui.theme.fontSfProRounded
 import com.example.hungrywolfscompose.shared.utils.extensions.noRippleClickable
 import com.google.accompanist.flowlayout.FlowRow
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.HorizontalPagerIndicator
+import com.google.accompanist.pager.rememberPagerState
 import com.skydoves.landscapist.CircularReveal
 import com.skydoves.landscapist.glide.GlideImage
 import org.koin.androidx.compose.getViewModel
@@ -56,7 +70,7 @@ import org.koin.core.parameter.parametersOf
 
 private const val ID_BACK = "id_back"
 private const val ID_FAVORITE_TOGGLE = "id_favorite_toggle"
-private const val ID_MEAL_IMAGE = "id_meal_image"
+private const val ID_PAGER_WITH_INDICATOR = "id_pager_with_indicator"
 private const val ID_TITLE = "id_title"
 private const val ID_TAGS = "id_tags"
 private const val ID_SUBTITLE_INGREDIENTS = "id_subtitle"
@@ -70,7 +84,7 @@ fun DetailsScreen(
     val constraintsForPortraitMode = ConstraintSet {
         val backButton = createRefFor(ID_BACK)
         val favoriteToggle = createRefFor(ID_FAVORITE_TOGGLE)
-        val mealImage = createRefFor(ID_MEAL_IMAGE)
+        val pagerWithIndicator = createRefFor(ID_PAGER_WITH_INDICATOR)
         val title = createRefFor(ID_TITLE)
         val tags = createRefFor(ID_TAGS)
         val subtitleIngredients = createRefFor(ID_SUBTITLE_INGREDIENTS)
@@ -83,15 +97,15 @@ fun DetailsScreen(
             top.linkTo(parent.top)
             end.linkTo(parent.end)
         }
-        constrain(mealImage) {
+        constrain(pagerWithIndicator) {
             start.linkTo(parent.start)
             end.linkTo(parent.end)
             top.linkTo(backButton.bottom, 10.dp)
-            width = Dimension.value(240.dp)
-            height = Dimension.value(240.dp)
+            width = Dimension.matchParent
+            height = Dimension.wrapContent
         }
         constrain(title) {
-            top.linkTo(mealImage.bottom, 16.dp)
+            top.linkTo(pagerWithIndicator.bottom, 16.dp)
             width = Dimension.matchParent
         }
         constrain(tags) {
@@ -106,14 +120,14 @@ fun DetailsScreen(
     val constraintsForLandscapeMode = ConstraintSet {
         val backButton = createRefFor(ID_BACK)
         val favoriteToggle = createRefFor(ID_FAVORITE_TOGGLE)
-        val mealImage = createRefFor(ID_MEAL_IMAGE)
+        val pagerWithIndicator = createRefFor(ID_PAGER_WITH_INDICATOR)
         val title = createRefFor(ID_TITLE)
         val tags = createRefFor(ID_TAGS)
         val subtitleIngredients = createRefFor(ID_SUBTITLE_INGREDIENTS)
 
         val startGuideline = createGuidelineFromStart(32.dp)
         val endGuideline = createGuidelineFromEnd(32.dp)
-        val barrierBottomTitle = createBottomBarrier(title,mealImage)
+        val barrierBottomTitle = createBottomBarrier(title, pagerWithIndicator)
 
         constrain(favoriteToggle) {
             top.linkTo(parent.top)
@@ -126,10 +140,10 @@ fun DetailsScreen(
         constrain(title) {
             top.linkTo(backButton.bottom, 16.dp)
             start.linkTo(startGuideline)
-            end.linkTo(mealImage.start)
+            end.linkTo(pagerWithIndicator.start)
             width = Dimension.preferredWrapContent
         }
-        constrain(mealImage) {
+        constrain(pagerWithIndicator) {
             top.linkTo(title.top, 10.dp)
             bottom.linkTo(title.bottom)
             start.linkTo(title.end)
@@ -147,7 +161,6 @@ fun DetailsScreen(
         }
         createHorizontalChain(favoriteToggle, backButton, chainStyle = ChainStyle.Spread)
     }
-
     val currentScreenOrientation = LocalContext.current.resources.configuration.orientation
     val constraints =
         if (currentScreenOrientation == Configuration.ORIENTATION_PORTRAIT) constraintsForPortraitMode
@@ -169,13 +182,11 @@ fun DetailsScreen(
                         .layoutId(ID_FAVORITE_TOGGLE),
                     onClick = viewModel::toggleFavoriteMeal
                 )
-                GlideImage(
-                    imageModel = viewModel.mealDetails.value?.imageUrl,
-                    circularReveal = CircularReveal(duration = 1000),
-                    contentScale = ContentScale.FillBounds,
-                    modifier = Modifier
-                        .clip(shape = CircleShape)
-                        .layoutId(ID_MEAL_IMAGE)
+
+                PagerWithIndicator(
+                    modifier = Modifier.layoutId(ID_PAGER_WITH_INDICATOR),
+                    foodUrl = viewModel.mealDetails.value?.imageUrl,
+                    videoLink = viewModel.mealDetails.value?.youtubeLink
                 )
                 Text(
                     text = viewModel.mealDetails.value?.name ?: "",
@@ -284,6 +295,60 @@ fun ToggleFavoriteButton(
             contentDescription = null,
             tint = Color.Unspecified
         )
+    }
+}
+
+@OptIn(ExperimentalPagerApi::class)
+@Composable
+fun PagerWithIndicator(
+    modifier: Modifier = Modifier,
+    foodUrl: String?,
+    videoLink: String?
+) {
+    val pageState = rememberPagerState()
+    val context = LocalContext.current
+    val customTabsIntent = CustomTabsIntent.Builder().build()
+    val videoThumbId = videoLink?.toUri()?.getQueryParameter("v").toString()
+    val hasVideo = !videoLink.isNullOrEmpty()
+
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(28.dp)
+    ) {
+        HorizontalPager(
+            count = if (hasVideo) 2 else 1,
+            state = pageState
+        ) { pageIndex ->
+            if (pageIndex == 0)
+                GlideImage(
+                    imageModel = foodUrl,
+                    contentScale = ContentScale.FillBounds,
+                    modifier = Modifier
+                        .size(240.dp)
+                        .clip(shape = CircleShape)
+                )
+            else
+                GlideImage(
+                    imageModel = stringResource(id = R.string.details_thumb_from_id, videoThumbId),
+                    contentScale = ContentScale.Fit,
+                    modifier = Modifier
+                        .height(240.dp)
+                        .wrapContentWidth()
+                        .noRippleClickable {
+                            videoLink
+                                ?.toUri()
+                                ?.let { customTabsIntent.launchUrl(context, it) }
+                        }
+                )
+        }
+        if (hasVideo)
+            HorizontalPagerIndicator(
+                pagerState = pageState,
+                activeColor = RedLight,
+                inactiveColor = GrayBright,
+                spacing = 12.dp,
+            )
     }
 }
 
