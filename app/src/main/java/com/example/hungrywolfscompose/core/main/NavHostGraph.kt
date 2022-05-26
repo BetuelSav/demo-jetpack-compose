@@ -26,7 +26,7 @@ fun NavHostGraph(navController: NavHostController) {
             ProfileScreen(navController = navController)
         }
         composable(route = NavScreen.SEARCH.route) {
-            SearchScreen()
+            SearchScreen(navController = navController)
         }
         composable(route = "${NavScreen.DETAILS.route}/{${NavArgs.MEAL_ID}}") { entry ->
             entry.arguments?.getString(NavArgs.MEAL_ID)?.let { mealId ->

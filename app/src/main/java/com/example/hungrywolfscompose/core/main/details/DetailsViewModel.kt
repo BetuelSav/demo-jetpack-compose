@@ -44,7 +44,7 @@ class DetailsViewModel(
     }
 
     private fun handlerResultSuccess(result: MealDetails) {
-        _mealDetails.value = result.mealDetails.firstOrNull()
+        _mealDetails.value = result.mealDetails?.firstOrNull()
         _isMealFavorite.value = favoriteMeals?.any { it.id == _mealDetails.value?.id } == true
         getIngredientsList()
     }

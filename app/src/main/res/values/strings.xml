@@ -22,4 +22,11 @@
     <!-- Favorite -->
     <string name="favorite_title">My favourites</string>
     <string name="favorite_swipe_to_delete">swipe on an item to delete</string>
+
+    <!-- Search -->
+    <string name="search_placeholder">Search your food here</string>
+    <string name="search_found_results">Found %s results</string>
+    <string name="search_not_found_title">Item not found</string>
+    <string name="search_not_found_description">Try searching the item with\na different keyword.</string>
+
 </resources>
