@@ -2,7 +2,7 @@ package com.example.hungrywolfscompose.data.models
 
 import com.google.gson.annotations.SerializedName
 
-data class MealDetails(@SerializedName("meals") val mealDetails: List<MealDetail>)
+data class MealDetails(@SerializedName("meals") val mealDetails: List<MealDetail>?)
 
 data class MealDetail(
     @SerializedName("idMeal") val id: String,
