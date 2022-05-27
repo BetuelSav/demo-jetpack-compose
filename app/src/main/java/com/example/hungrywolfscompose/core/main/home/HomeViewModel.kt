@@ -4,14 +4,13 @@ import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.hungrywolfscompose.data.models.MealCategories
 import com.example.hungrywolfscompose.data.models.Meals
 import com.example.hungrywolfscompose.shared.usecases.GetMealCategoriesUseCase
-import kotlinx.coroutines.launch
 import com.example.hungrywolfscompose.shared.base.Result
 import com.example.hungrywolfscompose.shared.usecases.GetMealsFromCategoryUseCase
 import com.example.hungrywolfscompose.shared.utils.Constants.DEBUG_TAG
+import com.example.hungrywolfscompose.shared.utils.extensions.performApiCall
 
 class HomeViewModel(
     private val getMealCategoriesUseCase: GetMealCategoriesUseCase,
@@ -29,7 +28,7 @@ class HomeViewModel(
     }
 
     private fun getMealCategories() {
-        viewModelScope.launch {
+        performApiCall {
             when (val result = getMealCategoriesUseCase.run(Unit)) {
                 is Result.Success ->
                     _mealCategories.value = result.data.also { mealCategories ->
@@ -43,7 +42,7 @@ class HomeViewModel(
     }
 
     fun getMealsFromCategory(category: String) {
-        viewModelScope.launch {
+        performApiCall {
             when (val result = getMealsFromCategoryUseCase.run(category)) {
                 is Result.Success -> _meals.value = result.data
                 is Result.Error -> Log.d(DEBUG_TAG, "getMealsFromCategory: ${result.error}")

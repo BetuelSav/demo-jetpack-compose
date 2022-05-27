@@ -7,11 +7,16 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.hungrywolfscompose.core.ui.theme.GrayLight
 import com.example.hungrywolfscompose.core.ui.theme.HungryWolfsComposeTheme
+import com.example.hungrywolfscompose.shared.base.LoadingScreen
+import com.example.hungrywolfscompose.shared.utils.Variables
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,6 +32,11 @@ class MainActivity : ComponentActivity() {
                     else -> true
                 }
 
+                var showLoadingScreen by remember { mutableStateOf(false) }
+                Variables.loadingScreen.observe(this@MainActivity) { isVisible ->
+                    showLoadingScreen = isVisible
+                }
+
                 Scaffold(
                     bottomBar = {
                         BottomBar(
@@ -39,6 +49,7 @@ class MainActivity : ComponentActivity() {
                 ) { innerPadding ->
                     Box(modifier = Modifier.padding(bottom = innerPadding.calculateBottomPadding())) {
                         NavHostGraph(navController = navController)
+                        if (showLoadingScreen) LoadingScreen()
                     }
                 }
             }
