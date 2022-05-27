@@ -21,7 +21,7 @@ fun LoadingScreen() {
             CircularProgressIndicator(
                 color = RedLight,
                 strokeWidth = 5.dp,
-                modifier = Modifier.size(200.dp)
+                modifier = Modifier.size(150.dp)
             )
     }
 }
