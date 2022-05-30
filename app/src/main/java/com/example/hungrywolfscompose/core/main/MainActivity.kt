@@ -28,13 +28,23 @@ class MainActivity : ComponentActivity() {
                 val currentDestination = navBackStackEntry?.destination
                 val bottomBarVisible = when (navBackStackEntry?.destination?.route) {
                     NavScreen.DETAILS.route + "/{${NavArgs.MEAL_ID}}",
-                    NavScreen.SEARCH.route -> false
+                    NavScreen.SEARCH.route, NavScreen.NO_INTERNET.route -> false
                     else -> true
                 }
 
                 var showLoadingScreen by remember { mutableStateOf(false) }
                 Variables.loadingScreen.observe(this@MainActivity) { isVisible ->
                     showLoadingScreen = isVisible
+                }
+
+                Variables.isNetworkConnectedObservable.observe(this) { isNetworkConnected ->
+                    when (isNetworkConnected) {
+                        null -> return@observe
+                        true -> if (currentDestination?.route == NavScreen.NO_INTERNET.route)
+                            navController.popBackStack()
+                        else -> if (currentDestination?.route != NavScreen.NO_INTERNET.route)
+                            navController.navigate(NavScreen.NO_INTERNET.route)
+                    }
                 }
 
                 Scaffold(

@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import com.example.hungrywolfscompose.core.main.details.DetailsScreen
 import com.example.hungrywolfscompose.core.main.favorite.FavoriteScreen
 import com.example.hungrywolfscompose.core.main.home.HomeScreen
+import com.example.hungrywolfscompose.core.main.noInternet.NoInternetScreen
 import com.example.hungrywolfscompose.core.main.profile.ProfileScreen
 import com.example.hungrywolfscompose.core.main.search.SearchScreen
 
@@ -32,6 +33,9 @@ fun NavHostGraph(navController: NavHostController) {
             entry.arguments?.getString(NavArgs.MEAL_ID)?.let { mealId ->
                 DetailsScreen(mealId = mealId, navController = navController)
             }
+        }
+        composable(route = NavScreen.NO_INTERNET.route) {
+            NoInternetScreen()
         }
     }
 }

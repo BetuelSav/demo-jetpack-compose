@@ -14,7 +14,7 @@ fun ViewModel.performApiCall(
     if (showLoading) {
         Variables.loadingScreen.value = true
         viewModelScope.launch {
-            block().also { delay(2000) }
+            block().also { delay(500) }
             Variables.loadingScreen.value = false
         }
     } else viewModelScope.launch { block() }

@@ -19,7 +19,8 @@ enum class BottomNavScreen(val route: String, val icon: Int) {
 
 enum class NavScreen(val route: String) {
     DETAILS(route = "details"),
-    SEARCH(route = "search")
+    SEARCH(route = "search"),
+    NO_INTERNET(route = "no_internet")
 }
 
 object NavArgs {
