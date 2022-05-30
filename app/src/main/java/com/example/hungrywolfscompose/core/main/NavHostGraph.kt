@@ -20,7 +20,7 @@ fun NavHostGraph(navController: NavHostController) {
             HomeScreen(navController)
         }
         composable(route = BottomNavScreen.FAVORITE.route) {
-            FavoriteScreen()
+            FavoriteScreen(navController = navController)
         }
         composable(route = BottomNavScreen.PROFILE.route) {
             ProfileScreen(navController = navController)

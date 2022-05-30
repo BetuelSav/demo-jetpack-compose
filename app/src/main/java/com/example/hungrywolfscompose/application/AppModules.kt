@@ -1,6 +1,7 @@
 package com.example.hungrywolfscompose.application
 
 import com.example.hungrywolfscompose.core.main.details.DetailsViewModel
+import com.example.hungrywolfscompose.core.main.favorite.FavoriteViewModel
 import com.example.hungrywolfscompose.core.main.home.HomeViewModel
 import com.example.hungrywolfscompose.core.main.search.SearchViewModel
 import com.example.hungrywolfscompose.data.api.ApiProvider
@@ -19,6 +20,7 @@ object AppModules {
         viewModel { HomeViewModel(get(), get()) }
         viewModel { (mealId: String) -> DetailsViewModel(mealId, get()) }
         viewModel { SearchViewModel(get()) }
+        viewModel { FavoriteViewModel() }
     }
 
     private val apiModule = module {

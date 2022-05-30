@@ -4,17 +4,15 @@ import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.hungrywolfscompose.data.models.IngredientsItem
-import com.example.hungrywolfscompose.data.models.Meal
 import com.example.hungrywolfscompose.data.models.MealDetail
 import com.example.hungrywolfscompose.data.models.MealDetails
 import com.example.hungrywolfscompose.data.models.MealFavorite
 import com.example.hungrywolfscompose.shared.base.Result
 import com.example.hungrywolfscompose.shared.usecases.GetMealDetailsUseCase
 import com.example.hungrywolfscompose.shared.utils.Constants
+import com.example.hungrywolfscompose.shared.utils.extensions.performApiCall
 import com.example.hungrywolfscompose.shared.utils.persistence.PersistenceService
-import kotlinx.coroutines.launch
 
 class DetailsViewModel(
     private val mealId: String,
@@ -35,7 +33,7 @@ class DetailsViewModel(
     }
 
     private fun getMealDetails() {
-        viewModelScope.launch {
+        performApiCall {
             when (val result = getMealDetailsUseCase.run(mealId)) {
                 is Result.Success -> handlerResultSuccess(result.data)
                 is Result.Error -> Log.d(Constants.DEBUG_TAG, "getMealDetails: ${result.error}")

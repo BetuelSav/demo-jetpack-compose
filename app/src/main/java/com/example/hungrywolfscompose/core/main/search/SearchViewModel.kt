@@ -4,12 +4,11 @@ import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.hungrywolfscompose.data.models.MealDetails
 import com.example.hungrywolfscompose.shared.base.Result
 import com.example.hungrywolfscompose.shared.usecases.GetSearchedMealsUseCase
 import com.example.hungrywolfscompose.shared.utils.Constants
-import kotlinx.coroutines.launch
+import com.example.hungrywolfscompose.shared.utils.extensions.performApiCall
 
 class SearchViewModel(
     private val getSearchedMealsUseCase: GetSearchedMealsUseCase
@@ -23,7 +22,7 @@ class SearchViewModel(
     }
 
     fun getMealsForQuery(query: String = "") {
-        viewModelScope.launch {
+        performApiCall(showLoading = false) {
             when (val result = getSearchedMealsUseCase.run(query)) {
                 is Result.Success -> _meals.value = result.data.also {
                     Log.d(
