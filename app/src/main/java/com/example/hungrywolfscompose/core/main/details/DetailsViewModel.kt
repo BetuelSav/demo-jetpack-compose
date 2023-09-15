@@ -3,19 +3,24 @@ package com.example.hungrywolfscompose.core.main.details
 import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import com.example.hungrywolfscompose.core.main.NavArgs
 import com.example.hungrywolfscompose.data.models.IngredientsItem
 import com.example.hungrywolfscompose.data.models.MealDetail
 import com.example.hungrywolfscompose.data.models.MealDetails
 import com.example.hungrywolfscompose.data.models.MealFavorite
 import com.example.hungrywolfscompose.shared.base.Result
-import com.example.hungrywolfscompose.shared.usecases.GetMealDetailsUseCase
+import com.example.hungrywolfscompose.domain.usecases.GetMealDetailsUseCase
 import com.example.hungrywolfscompose.shared.utils.Constants
 import com.example.hungrywolfscompose.shared.utils.extensions.performApiCall
 import com.example.hungrywolfscompose.shared.utils.persistence.PersistenceService
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class DetailsViewModel(
-    private val mealId: String,
+@HiltViewModel
+class DetailsViewModel @Inject constructor(
+    private val savedStateHandle: SavedStateHandle,
     private val getMealDetailsUseCase: GetMealDetailsUseCase
 ) : ViewModel(), PersistenceService {
 
@@ -34,9 +39,11 @@ class DetailsViewModel(
 
     private fun getMealDetails() {
         performApiCall {
+            val mealId = savedStateHandle.get<String>(NavArgs.MEAL_ID) ?: return@performApiCall
             when (val result = getMealDetailsUseCase.run(mealId)) {
                 is Result.Success -> handlerResultSuccess(result.data)
                 is Result.Error -> Log.d(Constants.DEBUG_TAG, "getMealDetails: ${result.error}")
+                else -> {}
             }
         }
     }

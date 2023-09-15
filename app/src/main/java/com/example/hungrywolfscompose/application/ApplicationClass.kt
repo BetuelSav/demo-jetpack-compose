@@ -3,17 +3,13 @@ package com.example.hungrywolfscompose.application
 import android.app.Application
 import com.example.hungrywolfscompose.shared.utils.NetworkUtil
 import com.orhanobut.hawk.Hawk
-import org.koin.android.ext.koin.androidContext
-import org.koin.core.context.startKoin
+import dagger.hilt.android.HiltAndroidApp
 
+@HiltAndroidApp
 class ApplicationClass: Application() {
     override fun onCreate() {
         super.onCreate()
         Hawk.init(applicationContext).build()
-        startKoin{
-            androidContext(this@ApplicationClass)
-            modules(AppModules.modules)
-        }
         NetworkUtil.startNetworkCallback(this)
     }
 

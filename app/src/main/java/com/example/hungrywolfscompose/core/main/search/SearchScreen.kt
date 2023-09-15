@@ -48,6 +48,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.hungrywolfscompose.R
 import com.example.hungrywolfscompose.core.main.NavScreen
@@ -62,12 +63,11 @@ import com.example.hungrywolfscompose.core.ui.theme.fontSfProRounded
 import com.example.hungrywolfscompose.data.models.MealDetail
 import com.example.hungrywolfscompose.shared.utils.extensions.noRippleClickable
 import com.skydoves.landscapist.glide.GlideImage
-import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun SearchScreen(
     navController: NavHostController,
-    viewModel: SearchViewModel = getViewModel()
+    viewModel: SearchViewModel = hiltViewModel()
 ) {
     Column(
         modifier = Modifier

@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -44,6 +43,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.hungrywolfscompose.R
 import com.example.hungrywolfscompose.core.main.NavScreen
@@ -57,12 +57,11 @@ import com.example.hungrywolfscompose.shared.utils.extensions.noRippleClickable
 import com.skydoves.landscapist.CircularReveal
 import com.skydoves.landscapist.glide.GlideImage
 import kotlinx.coroutines.launch
-import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun HomeScreen(
     navController: NavHostController,
-    viewModel: HomeViewModel = getViewModel()
+    viewModel: HomeViewModel = hiltViewModel()
 ) {
     var selectedCategoryIndex by rememberSaveable { mutableStateOf(0) }
     val mealsPreviewListState = rememberLazyListState()

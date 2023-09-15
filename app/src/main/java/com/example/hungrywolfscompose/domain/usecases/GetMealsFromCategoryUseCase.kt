@@ -1,12 +1,15 @@
-package com.example.hungrywolfscompose.shared.usecases
+package com.example.hungrywolfscompose.domain.usecases
 
 import com.example.hungrywolfscompose.data.models.Meals
-import com.example.hungrywolfscompose.data.repo.MainRepo
+import com.example.hungrywolfscompose.domain.repository.MainRepository
 import com.example.hungrywolfscompose.shared.base.BaseUseCase
 import com.example.hungrywolfscompose.shared.utils.Constants
 import com.example.hungrywolfscompose.shared.base.Result
+import javax.inject.Inject
 
-class GetMealsFromCategoryUseCase(private val repo: MainRepo) : BaseUseCase<String, Meals>() {
+class GetMealsFromCategoryUseCase @Inject constructor(
+    private val repo: MainRepository
+) : BaseUseCase<String, Meals>() {
     override suspend fun run(params: String): Result<Meals> {
         return try {
             Result.Success(repo.getMealsFromCategory(params))

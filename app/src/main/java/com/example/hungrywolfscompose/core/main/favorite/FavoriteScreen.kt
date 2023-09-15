@@ -44,6 +44,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.hungrywolfscompose.R
 import com.example.hungrywolfscompose.core.main.NavScreen
@@ -52,14 +53,13 @@ import com.example.hungrywolfscompose.core.ui.theme.fontSfProRounded
 import com.example.hungrywolfscompose.shared.utils.extensions.noRippleClickable
 import com.skydoves.landscapist.glide.GlideImage
 import kotlinx.coroutines.launch
-import org.koin.androidx.compose.getViewModel
 import kotlin.math.roundToInt
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun FavoriteScreen(
     navController: NavHostController,
-    viewModel: FavoriteViewModel = getViewModel()
+    viewModel: FavoriteViewModel = hiltViewModel()
 ) {
     viewModel.updateFavoriteMealList()
     val offsetXinDp = (-80).dp
