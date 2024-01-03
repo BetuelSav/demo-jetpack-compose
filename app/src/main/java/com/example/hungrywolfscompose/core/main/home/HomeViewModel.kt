@@ -6,13 +6,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.hungrywolfscompose.data.models.MealCategories
 import com.example.hungrywolfscompose.data.models.Meals
-import com.example.hungrywolfscompose.shared.usecases.GetMealCategoriesUseCase
+import com.example.hungrywolfscompose.domain.usecases.GetMealCategoriesUseCase
 import com.example.hungrywolfscompose.shared.base.Result
-import com.example.hungrywolfscompose.shared.usecases.GetMealsFromCategoryUseCase
+import com.example.hungrywolfscompose.domain.usecases.GetMealsFromCategoryUseCase
 import com.example.hungrywolfscompose.shared.utils.Constants.DEBUG_TAG
 import com.example.hungrywolfscompose.shared.utils.extensions.performApiCall
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class HomeViewModel(
+@HiltViewModel
+class HomeViewModel @Inject constructor(
     private val getMealCategoriesUseCase: GetMealCategoriesUseCase,
     private val getMealsFromCategoryUseCase: GetMealsFromCategoryUseCase
 ) : ViewModel() {
@@ -36,7 +39,9 @@ class HomeViewModel(
                             getMealsFromCategory(category)
                         }
                     }
+
                 is Result.Error -> Log.d(DEBUG_TAG, "getMealCategories: ${result.error}")
+                else -> {}
             }
         }
     }
@@ -46,6 +51,7 @@ class HomeViewModel(
             when (val result = getMealsFromCategoryUseCase.run(category)) {
                 is Result.Success -> _meals.value = result.data
                 is Result.Error -> Log.d(DEBUG_TAG, "getMealsFromCategory: ${result.error}")
+                else -> {}
             }
         }
     }

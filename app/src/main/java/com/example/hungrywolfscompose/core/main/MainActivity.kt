@@ -17,7 +17,9 @@ import com.example.hungrywolfscompose.core.ui.theme.GrayLight
 import com.example.hungrywolfscompose.core.ui.theme.HungryWolfsComposeTheme
 import com.example.hungrywolfscompose.shared.base.LoadingScreen
 import com.example.hungrywolfscompose.shared.utils.Variables
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -6,11 +6,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.hungrywolfscompose.data.models.MealDetails
 import com.example.hungrywolfscompose.shared.base.Result
-import com.example.hungrywolfscompose.shared.usecases.GetSearchedMealsUseCase
+import com.example.hungrywolfscompose.domain.usecases.GetSearchedMealsUseCase
 import com.example.hungrywolfscompose.shared.utils.Constants
 import com.example.hungrywolfscompose.shared.utils.extensions.performApiCall
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class SearchViewModel(
+@HiltViewModel
+class SearchViewModel @Inject constructor(
     private val getSearchedMealsUseCase: GetSearchedMealsUseCase
 ) : ViewModel() {
 
@@ -30,7 +33,9 @@ class SearchViewModel(
                         "getMealsFromQuery: ${result.data.mealDetails}"
                     )
                 }
+
                 is Result.Error -> Log.d(Constants.DEBUG_TAG, "getMealsFromQuery: ${result.error}")
+                else -> {}
             }
         }
     }

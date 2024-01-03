@@ -48,6 +48,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import androidx.constraintlayout.compose.Dimension
 import androidx.core.net.toUri
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.hungrywolfscompose.R
 import com.example.hungrywolfscompose.core.ui.theme.GrayBright
@@ -62,8 +63,6 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
 import com.skydoves.landscapist.glide.GlideImage
-import org.koin.androidx.compose.getViewModel
-import org.koin.core.parameter.parametersOf
 
 private const val ID_BACK = "id_back"
 private const val ID_FAVORITE_TOGGLE = "id_favorite_toggle"
@@ -75,9 +74,8 @@ private const val SHRINK_SIZE = 4
 
 @Composable
 fun DetailsScreen(
-    mealId: String,
     navController: NavHostController,
-    viewModel: DetailsViewModel = getViewModel() { parametersOf(mealId) }
+    viewModel: DetailsViewModel = hiltViewModel()
 ) {
     var ingredientsExpanded by remember { mutableStateOf(false) }
     var instructionsExpanded by remember { mutableStateOf(false) }
