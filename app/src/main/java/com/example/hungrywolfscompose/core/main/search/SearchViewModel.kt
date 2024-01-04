@@ -4,9 +4,9 @@ import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.example.hungrywolfscompose.data.models.MealDetails
-import com.example.hungrywolfscompose.shared.base.Result
-import com.example.hungrywolfscompose.domain.usecases.GetSearchedMealsUseCase
+import com.example.domain.models.MealDetails
+import com.example.domain.shared.Result
+import com.example.domain.usecases.GetSearchedMealsUseCase
 import com.example.hungrywolfscompose.shared.utils.Constants
 import com.example.hungrywolfscompose.shared.utils.extensions.performApiCall
 import dagger.hilt.android.lifecycle.HiltViewModel

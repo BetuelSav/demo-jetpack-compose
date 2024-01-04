@@ -1,7 +1,7 @@
 package com.example.hungrywolfscompose.shared.utils.persistence
 
 import android.util.Log
-import com.example.hungrywolfscompose.data.models.MealFavorite
+import com.example.domain.models.MealFavorite
 import com.example.hungrywolfscompose.shared.utils.Constants
 import com.orhanobut.hawk.Hawk
 

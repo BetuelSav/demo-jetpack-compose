@@ -3,7 +3,7 @@ package com.example.hungrywolfscompose.core.main.favorite
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.example.hungrywolfscompose.data.models.MealFavorite
+import com.example.domain.models.MealFavorite
 import com.example.hungrywolfscompose.shared.utils.persistence.PersistenceService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

@@ -6,12 +6,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.example.hungrywolfscompose.core.main.NavArgs
-import com.example.hungrywolfscompose.data.models.IngredientsItem
-import com.example.hungrywolfscompose.data.models.MealDetail
-import com.example.hungrywolfscompose.data.models.MealDetails
-import com.example.hungrywolfscompose.data.models.MealFavorite
-import com.example.hungrywolfscompose.shared.base.Result
-import com.example.hungrywolfscompose.domain.usecases.GetMealDetailsUseCase
+import com.example.domain.models.MealDetail
+import com.example.domain.models.MealDetails
+import com.example.domain.models.MealFavorite
+import com.example.domain.shared.Result
+import com.example.domain.usecases.GetMealDetailsUseCase
 import com.example.hungrywolfscompose.shared.utils.Constants
 import com.example.hungrywolfscompose.shared.utils.extensions.performApiCall
 import com.example.hungrywolfscompose.shared.utils.persistence.PersistenceService

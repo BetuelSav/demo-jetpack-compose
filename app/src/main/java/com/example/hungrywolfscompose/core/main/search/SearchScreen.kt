@@ -60,7 +60,7 @@ import com.example.hungrywolfscompose.core.ui.theme.Gray98
 import com.example.hungrywolfscompose.core.ui.theme.GrayBright
 import com.example.hungrywolfscompose.core.ui.theme.fontSfPro
 import com.example.hungrywolfscompose.core.ui.theme.fontSfProRounded
-import com.example.hungrywolfscompose.data.models.MealDetail
+import com.example.domain.models.MealDetail
 import com.example.hungrywolfscompose.shared.utils.extensions.noRippleClickable
 import com.skydoves.landscapist.glide.GlideImage
 

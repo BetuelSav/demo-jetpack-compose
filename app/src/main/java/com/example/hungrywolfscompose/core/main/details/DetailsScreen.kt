@@ -72,6 +72,14 @@ private const val ID_TAGS = "id_tags"
 private const val ID_SUBTITLE_INGREDIENTS = "id_subtitle"
 private const val SHRINK_SIZE = 4
 
+data class IngredientsItem(
+    val measurement: String,
+    val ingredient: String,
+    val initialChecked: Boolean = false
+) {
+    var checked by mutableStateOf(initialChecked)
+}
+
 @Composable
 fun DetailsScreen(
     navController: NavHostController,
